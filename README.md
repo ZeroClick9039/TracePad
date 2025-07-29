@@ -16,7 +16,7 @@ TracePad is a lightweight, intuitive text editor that tracks manual and pasted i
 ## Installation
 Clone the repository:
 ```bash
-git clone https://github.com/yourusername/TracePad.git
+git clone https://github.com/ZeroClick9039/TracePad.git
 cd TracePad
 
 ## Install required dependencies
