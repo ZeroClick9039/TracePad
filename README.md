@@ -20,7 +20,7 @@ git clone https://github.com/ZeroClick9039/TracePad.git
 cd TracePad
 
 ## Install required dependencies
-pip install -r requirements.txt
+pip install -r requirement.txt
 
 ## Usage
-python editor.py
+python main.py
