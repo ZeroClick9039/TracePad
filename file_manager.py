@@ -1,5 +1,5 @@
 """
-File Manager - Handles file operations for .lakra format files.
+File Manager - Handles file operations for .sf format files.
 """
 
 import os
@@ -13,26 +13,26 @@ class FileManager:
     def __init__(self):
         self.metadata_manager = MetadataManager()
         
-    def is_lakra_file(self, file_path: str) -> bool:
-        """Check if a file is a .lakra format file."""
-        return file_path.endswith('.lakra')
+    def is_sf_file(self, file_path: str) -> bool:
+        """Check if a file is a .sf format file."""
+        return file_path.endswith('.sf')
     
     def get_base_format(self, file_path: str) -> Optional[str]:
-        """Get the base format from a .lakra file (e.g., 'txt' from 'file.txt.lakra')."""
-        if not self.is_lakra_file(file_path):
+        """Get the base format from a .sf file (e.g., 'txt' from 'file.txt.sf')."""
+        if not self.is_sf_file(file_path):
             return None
         
-        # Remove .lakra extension and get the previous extension
-        base_path = file_path[:-6]  # Remove '.lakra'
+        # Remove .sf extension and get the previous extension
+        base_path = file_path[:-6]  # Remove '.sf'
         if '.' in base_path:
             return base_path.split('.')[-1].lower()
         return 'txt'  # Default to txt if no base extension
     
-    def suggest_lakra_filename(self, original_path: str) -> str:
-        """Suggest a .lakra filename based on the original file path."""
-        if self.is_lakra_file(original_path):
+    def suggest_sf_filename(self, original_path: str) -> str:
+        """Suggest a .sf filename based on the original file path."""
+        if self.is_sf_file(original_path):
             return original_path
-        return original_path + '.lakra'
+        return original_path + '.sf'
     
     def load_file(self, file_path: str) -> Tuple[str, Optional[Dict[str, Any]]]:
         """Load content and metadata from a file."""
@@ -43,8 +43,8 @@ class FileManager:
             with open(file_path, 'r', encoding='utf-8') as file:
                 file_content = file.read()
             
-            if self.is_lakra_file(file_path):
-                return self._parse_lakra_content(file_content)
+            if self.is_sf_file(file_path):
+                return self._parse_sf_content(file_content)
             else:
                 # Regular file, no metadata
                 return file_content, None
@@ -60,8 +60,8 @@ class FileManager:
             if directory and not os.path.exists(directory):
                 os.makedirs(directory)
             
-            if self.is_lakra_file(file_path):
-                file_content = self._create_lakra_content(content, metadata)
+            if self.is_sf_file(file_path):
+                file_content = self._create_sf_content(content, metadata)
             else:
                 file_content = content
             
@@ -71,8 +71,8 @@ class FileManager:
         except Exception as e:
             raise Exception(f"Failed to save file '{file_path}': {str(e)}")
     
-    def _parse_lakra_content(self, file_content: str) -> Tuple[str, Optional[Dict[str, Any]]]:
-        """Parse .lakra file content to extract text content and metadata."""
+    def _parse_sf_content(self, file_content: str) -> Tuple[str, Optional[Dict[str, Any]]]:
+        """Parse .sf file content to extract text content and metadata."""
         try:
             # Look for metadata delimiter
             metadata_start = "<!-- GHOSTKEY_METADATA_START -->"
@@ -104,15 +104,15 @@ class FileManager:
             return content, metadata
         
         except Exception as e:
-            print(f"Error parsing lakra content: {e}")
+            print(f"Error parsing sf content: {e}")
             # Return content without metadata on error
             return file_content, None
     
-    def _create_lakra_content(self, content: str, metadata: Optional[Dict[str, Any]]) -> str:
-        """Create .lakra file content with embedded metadata."""
+    def _create_sf_content(self, content: str, metadata: Optional[Dict[str, Any]]) -> str:
+        """Create .sf file content with embedded metadata."""
         try:
             # Start with the text content
-            lakra_content = content
+            sf_content = content
             
             # Add metadata if provided
             if metadata:
@@ -121,16 +121,16 @@ class FileManager:
                     metadata_json = self.metadata_manager.serialize_metadata(metadata)
                     
                     # Add metadata section
-                    lakra_content += "\n\n<!-- GHOSTKEY_METADATA_START -->\n"
-                    lakra_content += metadata_json
-                    lakra_content += "\n<!-- GHOSTKEY_METADATA_END -->"
+                    sf_content += "\n\n<!-- GHOSTKEY_METADATA_START -->\n"
+                    sf_content += metadata_json
+                    sf_content += "\n<!-- GHOSTKEY_METADATA_END -->"
                 else:
                     print("Warning: Invalid metadata, saving without metadata")
             
-            return lakra_content
+            return sf_content
         
         except Exception as e:
-            print(f"Error creating lakra content: {e}")
+            print(f"Error creating sf content: {e}")
             return content
     
     def export_metadata(self, file_path: str, metadata: Dict[str, Any]):
@@ -174,12 +174,12 @@ class FileManager:
                 "exists": True,
                 "size": stat.st_size,
                 "modified": stat.st_mtime,
-                "is_lakra": self.is_lakra_file(file_path),
+                "is_sf": self.is_sf_file(file_path),
                 "has_metadata": False
             }
             
             # Check for metadata
-            if info["is_lakra"]:
+            if info["is_sf"]:
                 try:
                     _, metadata = self.load_file(file_path)
                     info["has_metadata"] = metadata is not None
