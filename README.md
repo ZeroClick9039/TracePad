@@ -1,11 +1,6 @@
 # TracePad
 TracePad is an intelligent Python text editor built with Tkinter that tracks text input sources by highlighting typed text in green and pasted text in red. It manages detailed metadata for each input segment, allowing users to easily identify and differentiate manual typing from pasted content within their documents.
 
-
-# TracePad
-
-TracePad is a lightweight, intuitive text editor that tracks manual and pasted inputs with color-coded highlights, enhancing text editing and source tracking.
-
 ## Features
 - Highlights manually typed text in green.
   <img width="1002" height="813" alt="Screenshot 2026-08-31 140232" src="https://github.com/user-attachments/assets/79658a5c-11b1-4949-bdcd-8ae73dd19204" />
