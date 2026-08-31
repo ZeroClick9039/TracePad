@@ -13,7 +13,7 @@ def main():
     app = Application(root)
     
     # Configure the root window
-    root.title("GhostKey - Text Editor")
+    root.title(" TracePad - Text Editor")
     root.geometry("800x600")
     root.minsize(600, 400)
     
